@@ -1,0 +1,22 @@
+//최솟값 구하기
+SELECT DATETIME FROM ANIMAL_INS ORDER BY DATETIME ASC limit 1;
+//동명 동물 수 구하기
+SELECT NAME, COUNT(NAME) FROM ANIMAL_INS GROUP BY NAME HAVING COUNT(NAME)>=2 ORDER BY NAME ASC;
+//동물 수 구하기
+SELECT COUNT(*) FROM ANIMAL_INS;
+//중복제거하기
+SELECT COUNT(DISTINCT NAME) FROM ANIMAL_INS WHERE NAME IS NOT NULL;
+//가격이 제일 비싼 식품의 정보 출력하기
+SELECT * FROM FOOD_PRODUCT ORDER BY PRICE DESC LIMIT 1;
+
+--sql쿼리 순서
+FROM and JOIN -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY -> LIMIT
+
+1. FROM 조회할 테이블 지정 후 JOIN을 실행하여 가상테이블로 결합
+2. WHERE로 조건에 맞는 데이터로 필터링
+3. GROUP BY 필터링된 데이터를 해당 기준으로 그룹핑
+4. HAVING 그룹핑 후 조건절 실행 (WHERE로 가능하다면 HAVING에 사용X)
+5. SELECT 출력할 컬럼값 선택
+6. ORDER BY 행의 순서를 정렬
+7. LIMIT 몇개의 행을 보여줄 것인지 결정
+
