@@ -1,0 +1,42 @@
+//이름에 EL이 들어가는 동물찾기
+SELECT ANIMAL_ID, NAME
+FROM ANIMAL_INS
+WHERE NAME LIKE '%EL%' AND ANIMAL_TYPE = "Dog"
+ORDER BY NAME ASC;
+//NULL처리하기
+SELECT ANIMAL_TYPE, IFNULL(NAME, "No name"), SEX_UPON_INTAKE
+FROM ANIMAL_INS;
+//DATETIME에서 DATE로 형변환
+SELECT ANIMAL_ID, NAME, DATE_FORMAT(DATETIME, '%Y-%m-%d')
+FROM ANIMAL_INS;
+//카테고리 별 상품 개수 구하기
+SELECT LEFT(PRODUCT_CODE, 2) AS CATEGORY,COUNT(PRODUCT_ID)
+FROM PRODUCT GROUP BY CATEGORY;
+//고양이와 개는 몇 마리 있을까
+SELECT ANIMAL_TYPE, COUNT(ANIMAL_TYPE)
+FROM ANIMAL_INS
+GROUP BY ANIMAL_TYPE
+ORDER BY ANIMAL_TYPE;
+
+JOIN
+[기본형]
+SELECT
+FROM TABLE_A
+_____ JOIN TABLE_B ON TABLE_A.KEY = TABLE_B.KEY
+
+  -LEFT/RIGHT JOIN
+  A,B 테이블 중에 A값 전체와, A의 KEY값과 B의 KEY 값이 같은 결과를 리턴
+  기준 테이블의 것은 모두 출력
+  LEFT OUTER JOIN을 거의 대부분 사용하여, FULL OUTER JOIN은 성능상 거의 사용하지 않는다.
+  -INNER JOIN (=JOIN, CROSS JOIN)
+  ID값이 서로 중복되는 값만 나타냄 쿼리는 생략
+  -FULL OUTER JOIN
+   MYSQL은 해당사항 없음, LEFT JOIN과 RIGHT JOIN을 UNION해 사용
+    --UNION
+    여러개의 SELECT문의 결를 하나의 테이블이나 결과 집합으로 표현 할 때 이용
+    각각 SELECT문으로 선택된 필드의 개수와 타입은 모두 같아야하며, 필드의 순서 또한 같아야함
+    DISTICT자동 포함 자동으로 중복제거
+    중복되는 레코드까지 모두 출력하고 싶다면, ALL 키워드를 사용
+  
+   -3중 조인
+   OUTER JOIN을 연속으로 3번 사용함
