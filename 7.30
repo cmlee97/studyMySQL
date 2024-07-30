@@ -1,0 +1,31 @@
+//대장균의 크기에 따라 분류하기 2
+SELECT B.ID,(
+CASE
+    WHEN B.COLONY_LEVEL = 1 THEN 'CRITICAL'
+    WHEN B.COLONY_LEVEL = 2 THEN 'HIGH'
+    WHEN B.COLONY_LEVEL = 3 THEN 'MEDIUM'
+    ELSE 'LOW'
+END) AS COLONY_NAME
+FROM (SELECT ID, NTILE(4)
+     OVER(ORDER BY SIZE_OF_COLONY DESC) AS "COLONY_LEVEL"
+     FROM ECOLI_DATA) AS B
+ORDER BY B.ID;
+
+-- 순위함수(분석함수)
+-- 결과에 순번, 순위를 매기는 함수
+-- 비집계함수중 RANK, NTILE, DENSE_RANK, ROW_NUMBER 등 해당
+-- PARTITION BY : 동일 그룹으로 묶어줄 칼럼 명 지정
+-- ORDER BY : PARTITION 정의에 지정된 칼럼에 대한 정렬 수행
+-- EX) 순위함수이름(ARGUMENTS)
+-- OVER([PARTITION BY <PARTION_BY_LIST>]
+-- ORDER BY <ORDER_BY_LIST>)
+-- FROM TABLE_NAME;
+-- 종류
+NTILE() : PARTITION을 지정된 수 만큼의 등급으로 나누어 각 등급 번호를 출력
+RANK() : 순위 값 중 동등 순위 번호는 같게 나오고 그 다음 순위를 다음 번호를 뺀 그 다음 값을 출력
+DENSE_RANK() : 순위 값 중 동등 순위 번호는 같게 나오고 그 다음 순위를 다음 번호로 출력
+ROW_NUMBER() : 동등 순위를 인식하지 않고 매번증가되는 번호를 출력
+LEAD(expr [,offset] [,default]) / LAG() : 지정된 칼럼의 이전, 이후의 행 값을 출력
+FIRST_VALUE() / LAST_VALUE() : 각 그룹별 첫 번째와 마지막값 하나만출력
+CUME_DIST() : 주어진 그룹에 대한 상대적인 누적분포도 값을 반환한다.
+분포도 값(비율)이므로 반환 값의 범위는 0 초과 1이하 사이의 값을 반환한다.
