@@ -1,0 +1,32 @@
+//입양 시각 구하기(2)
+SET @HOUR = -1;
+SELECT (@HOUR := @HOUR+1) AS HOUR, (SELECT COUNT(*) FROM ANIMAL_OUTS WHERE HOUR(DATETIME) = @HOUR) AS COUNT
+FROM ANIMAL_OUTS
+WHERE @HOUR < 23;
+//특정 세대의 대장균 찾기
+SELECT ID
+FROM ECOLI_DATA
+WHERE PARENT_ID IN (SELECT ID
+                   FROM ECOLI_DATA
+                   WHERE PARENT_ID IN (SELECT ID 
+                                      FROM ECOLI_DATA
+                                      WHERE PARENT_ID IS NULL)
+                   )
+ORDER BY ID ASC;
+## 먼저 1세대 대장균 ID선택
+## 첫번째 WHERE문에서 IN으로 2세대 대장균 ID선택
+## IN안의 WHERE문에서 IN 으로 2세대 대장균의 3세대 대장균 ID선택
+//자동차 대여 기록 별 대여 금액 구하기
+SELECT HISTORY_ID, ROUND(DAILY_FEE * (DATEDIFF(H.END_DATE, H.START_DATE)+1)*(
+    CASE
+    WHEN DATEDIFF(END_DATE, START_DATE)+1 < 7 THEN 1                                                 WHEN DATEDIFF(END_DATE, START_DATE)+1 < 30 THEN 0.95                                             WHEN DATEDIFF(END_DATE, START_DATE)+1 < 90 THEN 0.92
+    ELSE 0.85 
+    END)) AS FEE
+FROM CAR_RENTAL_COMPANY_CAR C JOIN CAR_RENTAL_COMPANY_RENTAL_HISTORY H ON C.CAR_ID = H.CAR_ID JOIN CAR_RENTAL_COMPANY_DISCOUNT_PLAN P ON C.CAR_TYPE = P.CAR_TYPE
+WHERE C.CAR_TYPE = '트럭'
+GROUP BY HISTORY_ID
+ORDER BY FEE DESC, HISTORY_ID DESC;
+
+
+## SET @변수명 = 대입값;
+## SELECT @변수명 := 대입값;
